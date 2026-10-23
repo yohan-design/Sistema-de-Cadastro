@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudentHub — Sistema de Cadastro Escolar</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- CABEÇALHO -->
+    <header class="topbar">
+        <div class="brand">
+            <div class="brand-logo" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 10L12 5 2 10l10 5 10-5z" />
+                    <path d="M6 12v5c3 3 9 3 12 0v-5" />
+                </svg>
+            </div>
+            <div>
+                <h1>StudentHub</h1>
+                <p>Sistema de Cadastro Escolar</p>
+            </div>
+        </div>
+        <button id="themeToggle" class="icon-btn" type="button" aria-label="Alternar entre modo claro e escuro"
+            title="Alternar tema">
+            <span id="themeIcon"></span>
+        </button>
+    </header>
+
+    <main class="container">
+
+        <!-- ESTATÍSTICAS -->
+        <section class="stats" aria-label="Estatísticas do sistema">
+            <article class="stat-card">
+                <span class="stat-label">Total de alunos</span>
+                <strong id="statTotal" class="stat-number">0</strong>
+                <span class="stat-note">Alunos cadastrados no sistema</span>
+            </article>
+            <article class="stat-card">
+                <span class="stat-label">Cadastros ativos</span>
+                <strong id="statActive" class="stat-number">0</strong>
+                <span class="stat-note">Registros presentes no sistema (não há status de matrícula)</span>
+            </article>
+            <article class="stat-card">
+                <span class="stat-label">Cursos diferentes</span>
+                <strong id="statCourses" class="stat-number">0</strong>
+                <span class="stat-note">Cursos com pelo menos um aluno</span>
+            </article>
+        </section>
+
+        <!-- FORMULÁRIO -->
+        <section class="card" aria-labelledby="formTitle">
+            <div class="card-header">
+                <div>
+                    <h2 id="formTitle">Novo cadastro</h2>
+                    <p class="card-subtitle">Campos marcados com <span class="required">*</span> são obrigatórios.</p>
+                </div>
+                <div class="card-header-actions">
+                    <span id="formBadge" class="badge badge-new">Novo aluno</span>
+                    <button id="btnNew" class="btn btn-outline" type="button">Novo aluno</button>
+                </div>
+            </div>
+
+            <form id="studentForm" novalidate>
+                <input type="hidden" id="studentId">
+
+                <div class="form-layout">
+
+                    <!-- Área da foto -->
+                    <div class="photo-box">
+                        <div id="photoPreview" class="photo-preview">
+                            <img id="photoImg" alt="Foto do aluno" hidden>
+                            <div id="photoPlaceholder" class="photo-placeholder">
+                                <span id="photoInitials" class="photo-initials">?</span>
+                                <small id="photoHint">Nenhuma foto selecionada</small>
+                            </div>
+                        </div>
+                        <input type="file" id="photoInput" accept="image/png,image/jpeg,image/webp" hidden>
+                        <div class="photo-actions">
+                            <button id="btnChoosePhoto" class="btn btn-primary btn-small" type="button">Escolher
+                                foto</button>
+                            <button id="btnRemovePhoto" class="btn btn-outline btn-small" type="button" disabled>Remover
+                                foto</button>
+                        </div>
+                        <small class="photo-rules">JPG, PNG ou WEBP, até 2 MB</small>
+                        <span class="field-error" id="error-photo"></span>
+                    </div>
+
+                    <!-- Campos -->
+                    <div class="fields">
+                        <div class="field field-full">
+                            <label for="fullName">Nome completo <span class="required">*</span></label>
+                            <input type="text" id="fullName" maxlength="100" autocomplete="off"
+                                placeholder="Ex.: Maria da Silva">
+                            <span class="field-error" id="error-fullName"></span>
+                        </div>
+
+                        <div class="field">
+                            <label for="email">E-mail <span class="required">*</span></label>
+                            <input type="email" id="email" maxlength="100" autocomplete="off"
+                                placeholder="nome@exemplo.com">
+                            <span class="field-error" id="error-email"></span>
+                        </div>
+
+                        <div class="field">
+                            <label for="phone">Telefone <span class="required">*</span></label>
+                            <input type="tel" id="phone" maxlength="15" autocomplete="off"
+                                placeholder="(00) 00000-0000">
+                            <span class="field-error" id="error-phone"></span>
+                        </div>
+
+                        <div class="field">
+                            <label for="gender">Sexo <span class="required">*</span></label>
+                            <select id="gender">
+                                <option value="">Selecione...</option>
+                                <option value="Feminino">Feminino</option>
+                                <option value="Masculino">Masculino</option>
+                                <option value="Outro / Prefiro não informar">Outro / Prefiro não informar</option>
+                            </select>
+                            <span class="field-error" id="error-gender"></span>
+                        </div>
+
+                        <div class="field">
+                            <label for="birthDate">Data de nascimento <span class="required">*</span></label>
+                            <input type="date" id="birthDate">
+                            <span class="field-error" id="error-birthDate"></span>
+                        </div>
+
+                        <div class="field">
+                            <label for="cpf">CPF <span class="required">*</span></label>
+                            <input type="text" id="cpf" maxlength="14" inputmode="numeric" autocomplete="off"
+                                placeholder="000.000.000-00">
+                            <span class="field-error" id="error-cpf"></span>
+                        </div>
+
+                        <div class="field">
+                            <label for="course">Curso <span class="required">*</span></label>
+                            <select id="course">
+                                <option value="">Selecione...</option>
+                                <option value="Técnico em Informática">Técnico em Informática</option>
+                                <option value="Desenvolvimento de Sistemas">Desenvolvimento de Sistemas</option>
+                                <option value="Redes de Computadores">Redes de Computadores</option>
+                                <option value="Administração">Administração</option>
+                            </select>
+                            <span class="field-error" id="error-course"></span>
+                        </div>
+
+                        <div class="field">
+                            <label for="classGroup">Turma <span class="required">*</span></label>
+                            <select id="classGroup">
+                                <option value="">Selecione...</option>
+                                <option value="1º Ano">1º Ano</option>
+                                <option value="2º Ano">2º Ano</option>
+                                <option value="3º Ano">3º Ano</option>
+                            </select>
+                            <span class="field-error" id="error-classGroup"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button id="btnSave" class="btn btn-primary" type="submit">Salvar cadastro</button>
+                    <button id="btnClear" class="btn btn-outline" type="button">Limpar campos</button>
+                </div>
+            </form>
+        </section>
+
+        <!-- TABELA -->
+        <section class="card" aria-labelledby="tableTitle">
+            <div class="card-header">
+                <div>
+                    <h2 id="tableTitle">Alunos cadastrados</h2>
+                    <p class="card-subtitle" id="tableCount">0 alunos</p>
+                </div>
+                <div class="search-box">
+                    <label for="searchInput" class="sr-only">Pesquisar alunos</label>
+                    <input type="search" id="searchInput" placeholder="Pesquisar por nome, e-mail ou curso"
+                        autocomplete="off">
+                </div>
+            </div>
+
+            <div class="table-wrapper">
+                <table class="student-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Aluno</th>
+                            <th>E-mail</th>
+                            <th>Telefone</th>
+                            <th>Curso</th>
+                            <th>Turma</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody"></tbody>
+                </table>
+            </div>
+            <p id="emptyMessage" class="empty-message" hidden></p>
+            <p class="storage-note">Os dados ficam salvos apenas neste navegador (localStorage). Não há banco de dados
+                real nesta versão.</p>
+        </section>
+
+    </main>
+
+    <!-- NOTIFICAÇÕES -->
+    <div id="toastContainer" class="toast-container" aria-live="polite"></div>
+
+    <!-- MODAL DE CONFIRMAÇÃO -->
+    <div id="confirmModal" class="modal-overlay" hidden>
+        <div class="modal" role="dialog" aria-modal="true" aria-labelledby="confirmTitle">
+            <h3 id="confirmTitle">Confirmar exclusão</h3>
+            <p id="confirmText"></p>
+            <div class="modal-actions">
+                <button id="confirmNo" class="btn btn-outline" type="button">Cancelar</button>
+                <button id="confirmYes" class="btn btn-danger" type="button">Excluir</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ASSISTENTE: GUIA STUDENTHUB -->
+    <div class="guide">
+        <div id="guideBubble" class="guide-bubble" hidden>
+            <span>Olá! Quer conhecer o StudentHub?</span>
+            <button id="guideBubbleClose" type="button" aria-label="Dispensar mensagem">&times;</button>
+        </div>
+
+        <section id="guidePanel" class="guide-panel" hidden aria-label="Guia StudentHub">
+            <div class="guide-header">
+                <div class="guide-header-title">
+                    <span class="guide-avatar" aria-hidden="true">
+                        <svg viewBox="0 0 48 48" width="22" height="22" fill="none" stroke="currentColor"
+                            stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M24 6v6" />
+                            <circle cx="24" cy="5" r="1.6" fill="currentColor" />
+                            <rect x="9" y="12" width="30" height="24" rx="8" />
+                            <circle cx="18" cy="23" r="2.2" fill="currentColor" stroke="none" />
+                            <circle cx="30" cy="23" r="2.2" fill="currentColor" stroke="none" />
+                            <path d="M18 30c3 2.4 9 2.4 12 0" />
+                        </svg>
+                    </span>
+                    <strong>Guia StudentHub</strong>
+                </div>
+                <button id="guideClose" class="guide-close" type="button" aria-label="Fechar guia">&times;</button>
+            </div>
+
+            <div class="guide-progress">
+                <span id="guideStepLabel">Etapa 1 de 6</span>
+                <div class="progress-track">
+                    <div id="guideProgressBar" class="progress-bar"></div>
+                </div>
+            </div>
+
+            <div class="guide-body">
+                <div id="guideIcon" class="guide-icon" aria-hidden="true"></div>
+                <h3 id="guideTitle"></h3>
+                <p id="guideText"></p>
+            </div>
+
+            <div class="guide-footer">
+                <button id="guidePrev" class="btn btn-outline btn-small" type="button">Anterior</button>
+                <button id="guideNext" class="btn btn-primary btn-small" type="button">Próximo</button>
+                <button id="guideFinish" class="btn btn-primary btn-small" type="button" hidden>Concluir</button>
+            </div>
+        </section>
+
+        <button id="guideToggle" class="guide-fab" type="button" aria-expanded="false"
+            aria-label="Abrir o Guia StudentHub" title="Guia StudentHub">
+            <svg viewBox="0 0 48 48" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2.4"
+                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M24 6v6" />
+                <circle cx="24" cy="5" r="1.6" fill="currentColor" />
+                <rect x="9" y="12" width="30" height="24" rx="8" />
+                <circle cx="18" cy="23" r="2.2" fill="currentColor" stroke="none" />
+                <circle cx="30" cy="23" r="2.2" fill="currentColor" stroke="none" />
+                <path d="M18 30c3 2.4 9 2.4 12 0" />
+                <path d="M5 22v6M43 22v6" />
+            </svg>
+        </button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
